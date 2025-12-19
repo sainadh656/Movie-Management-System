@@ -3,10 +3,7 @@
 # 🎬 Movie Management System  
 ### A full-stack movie database using React, Node.js, Express & SQLite
 
-![Frontend](https://img.shields.io/badge/Frontend-React-00eaff?style=for-the-badge&logo=react)
-![Backend](https://img.shields.io/badge/Backend-Node.js-3ddc84?style=for-the-badge&logo=node.js)
-![Database](https://img.shields.io/badge/Database-SQLite-8181ff?style=for-the-badge&logo=sqlite)
-![Status](https://img.shields.io/badge/Status-Completed-00c851?style=for-the-badge)
+
 
 </div>
 
