@@ -181,7 +181,43 @@ app.get('/directors/:directorId/movies/', async (req, res) => {
     })),
   )
 })
+/* ----------Signup API---------*/
 
+app.post('/signup/', async (req, res) => {
+  const {username, email, password} = req.body
+
+  const query = `
+    INSERT INTO user (username, email, password)
+    VALUES (?, ?, ?);
+  `
+
+  await database.run(query, [username, email, password])
+
+  res.send({message: "User created"})
+})
+
+/* ------ Sign in API ------- */
+app.post('/login/', async (req, res) => {
+  const {email, password} = req.body
+
+  const query = `SELECT * FROM user WHERE email = ?;`
+  const user = await database.get(query, [email])
+
+  if (!user) {
+    res.status(400).send({error: 'User not found'})
+    return
+  }
+
+  if (password !== user.password) {
+    res.status(400).send({error: 'Invalid password'})
+    return
+  }
+
+  res.send({
+    userId: user.user_id,
+    role: user.role,
+  })
+})
 /* ---------- SEARCH API ---------- */
 
 app.get('/movies/search/:name', async (req, res) => {
