@@ -24,6 +24,13 @@ INSERT INTO director (director_name) VALUES
 ('Steven Spielberg'),
 ('Lokesh Kanagaraj');
 
+--user table--
+CREATE TABLE user (
+  user_id INTEGER PRIMARY KEY AUTOINCREMENT,
+  username TEXT,
+  email TEXT,
+  password TEXT
+);
 -- Insert Movies with Posters
 INSERT INTO movie (director_id, movie_name, lead_actor, movie_image)
 VALUES
