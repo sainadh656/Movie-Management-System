@@ -9,7 +9,7 @@ export default function UpdateMovie() {
 
   const updateMovie = async () => {
     await fetch(
-      `https://harikrishnasainadhvpb9nrjscpupp7h.drops.nxtwave.tech/movies/${movieId}/`,
+      `https://movie-management-system-1.onrender.com/movies/${movieId}/`,
       {
         method: 'PUT',
         headers: {'Content-Type': 'application/json'},

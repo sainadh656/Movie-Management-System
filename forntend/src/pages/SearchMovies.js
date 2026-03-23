@@ -1,14 +1,20 @@
 import {useEffect, useState} from 'react'
+import './addwatchlistbtn.css'
+import {useLocation} from 'react-router-dom'
 
 export default function Movies() {
   const [movies, setMovies] = useState([])
+  const [addedMovies, setAddedMovies] = useState([])
   const [search, setSearch] = useState('')
   const [showDropdown, setShowDropdown] = useState(false)
 
-  const BASE_URL =
-    'https://harikrishnasainadhvpb9nrjscpupp7h.drops.nxtwave.tech'
+  const BASE_URL = 'https://movie-management-system-1.onrender.com'
 
-  // Load all movies
+  const userId = localStorage.getItem('userId')
+  const role = localStorage.getItem('role')
+  const location = useLocation() // 🔥 key for resync
+
+  /* ---------- LOAD ALL MOVIES ---------- */
   const loadAllMovies = async () => {
     try {
       const res = await fetch(`${BASE_URL}/movies/`)
@@ -23,7 +29,19 @@ export default function Movies() {
     loadAllMovies()
   }, [])
 
-  // Search movies
+  /* ---------- LOAD WATCHLIST (SYNC STATE) ---------- */
+  useEffect(() => {
+    if (role === 'USER') {
+      fetch(`${BASE_URL}/users/${userId}/watchlist/`)
+        .then(res => res.json())
+        .then(data => {
+          const ids = data.map(m => m.movieId)
+          setAddedMovies(ids)
+        })
+    }
+  }, [location.key, userId, role]) // 🔥 important
+
+  /* ---------- SEARCH MOVIES ---------- */
   const searchMovies = async value => {
     setSearch(value)
 
@@ -41,6 +59,17 @@ export default function Movies() {
     } catch (err) {
       console.error('Search error:', err)
     }
+  }
+
+  /* ---------- ADD TO WATCHLIST ---------- */
+  const addToWatchlist = async movieId => {
+    await fetch(`${BASE_URL}/users/${userId}/watchlist/`, {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({movieId}),
+    })
+
+    setAddedMovies(prev => [...prev, movieId])
   }
 
   return (
@@ -77,15 +106,28 @@ export default function Movies() {
 
       {/* Movie Grid */}
       <div className="movie-grid">
-        {movies.map(m => (
-          <div key={m.movieId} className="movie-card">
-            <img src={m.movieImage} alt={m.movieName} className="poster" />
-            <p>
-              <b>ID:</b> {m.movieId}
-            </p>
-            <h3>{m.movieName}</h3>
-          </div>
-        ))}
+        {movies.map(m => {
+          const isAdded = addedMovies.includes(m.movieId)
+
+          return (
+            <div key={m.movieId} className="movie-card">
+              <img src={m.movieImage} alt={m.movieName} className="poster" />
+              <h3>{m.movieName}</h3>
+
+              {/* USER ONLY BUTTON */}
+              {role === 'USER' && (
+                <button
+                  type="button"
+                  disabled={isAdded}
+                  onClick={() => addToWatchlist(m.movieId)}
+                  className={isAdded ? 'added-btn' : 'add-btn'}
+                >
+                  {isAdded ? 'Added to Watchlist' : '+ Add to Watchlist'}
+                </button>
+              )}
+            </div>
+          )
+        })}
       </div>
 
       {movies.length === 0 && <p>No movies found</p>}

@@ -5,7 +5,7 @@ export default function DeleteMovie() {
 
   const deleteMovie = async () => {
     await fetch(
-      `https://harikrishnasainadhvpb9nrjscpupp7h.drops.nxtwave.tech/movies/${movieId}/`,
+      `https://movie-management-system-1.onrender.com/movies/${movieId}/`,
       {
         method: 'DELETE',
       },

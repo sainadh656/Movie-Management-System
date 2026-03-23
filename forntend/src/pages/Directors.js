@@ -4,9 +4,7 @@ export default function Directors() {
   const [directors, setDirectors] = useState([])
 
   useEffect(() => {
-    fetch(
-      'https://harikrishnasainadhvpb9nrjscpupp7h.drops.nxtwave.tech/directors/',
-    )
+    fetch('https://movie-management-system-1.onrender.com/directors/')
       .then(res => res.json())
       .then(data => setDirectors(data))
   }, [])

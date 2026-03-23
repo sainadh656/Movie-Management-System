@@ -7,19 +7,16 @@ export default function AddMovie() {
   const [movieImage, setMovieImage] = useState('')
 
   const addMovie = async () => {
-    await fetch(
-      'https://harikrishnasainadhvpb9nrjscpupp7h.drops.nxtwave.tech/movies/',
-      {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({
-          directorId,
-          movieName,
-          leadActor,
-          movieImage,
-        }),
-      },
-    )
+    await fetch('https://movie-management-system-1.onrender.com/movies/', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        directorId,
+        movieName,
+        leadActor,
+        movieImage,
+      }),
+    })
   }
 
   return (

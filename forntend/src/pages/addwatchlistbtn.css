@@ -1,0 +1,9 @@
+/*movies*/
+.added-btn {
+  background-color: #2ecc71;
+  cursor: not-allowed;
+}
+.add-btn {
+  background-color: #4b7bec;
+  cursor: pointer;
+}

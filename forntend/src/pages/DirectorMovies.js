@@ -6,7 +6,7 @@ export default function DirectorMovies() {
 
   const loadMovies = async () => {
     const res = await fetch(
-      `https://harikrishnasainadhvpb9nrjscpupp7h.drops.nxtwave.tech/directors/${directorId}/movies/`,
+      `https://movie-management-system-1.onrender.com/directors/${directorId}/movies/`,
     )
     const data = await res.json()
     setMovies(data)

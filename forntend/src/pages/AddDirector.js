@@ -4,14 +4,11 @@ export default function AddDirector() {
   const [directorName, setDirectorName] = useState('')
 
   const addDirector = async () => {
-    await fetch(
-      'https://harikrishnasainadhvpb9nrjscpupp7h.drops.nxtwave.tech/directors/',
-      {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({directorName}),
-      },
-    )
+    await fetch('https://movie-management-system-1.onrender.com/directors/', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({directorName}),
+    })
 
     setDirectorName('')
   }

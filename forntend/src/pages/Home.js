@@ -1,3 +1,5 @@
+import './home.css'
+
 export default function Home() {
   return (
     <div className="home-container">
@@ -10,27 +12,32 @@ export default function Home() {
 
       <div className="features-grid">
         <div className="feature-card">
-          <h3>🎞 Movie Collection</h3>
+          <h3>View watchlist Movies</h3>
           <p>
-            Browse all movies along with posters, actors, and director details.
+            View all your saved movies in one place and manage your watchlist
+            effortlessly.
           </p>
         </div>
 
         <div className="feature-card">
-          <h3>🔍 Smart Search</h3>
-          <p>Find movies instantly using fast autocomplete search.</p>
-        </div>
-
-        <div className="feature-card">
-          <h3>🎬 Director Management</h3>
-          <p>Search, add, and explore movies by specific directors.</p>
-        </div>
-
-        <div className="feature-card">
-          <h3>🛠 CRUD Operations</h3>
+          <h3>Smart Search</h3>
           <p>
-            Add, update, or delete movies and directors with a simple interface.
+            Quickly find movies as you type with instant suggestions for a
+            smooth search experience.
           </p>
+        </div>
+
+        <div className="feature-card">
+          <h3>Add movies to personal watchlist</h3>
+          <p>
+            Save your favorite movies to a personal watchlist and access them
+            anytime.
+          </p>
+        </div>
+
+        <div className="feature-card">
+          <h3>Remove movies from watchlist</h3>
+          <p>Easily remove movies from your watchlist with a single click.</p>
         </div>
       </div>
 
