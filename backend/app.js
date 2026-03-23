@@ -181,15 +181,28 @@ app.get('/directors/:directorId/movies/', async (req, res) => {
     })),
   )
 })
+
+// Delete director
+
+app.delete('/directors/:directorId/', async (req, res) => {
+  const {directorId} = req.params
+
+  await database.run(
+    `DELETE FROM director WHERE director_id = ?;`,
+    [directorId],
+  )
+
+  res.send('Director Removed')
+})
 /* ----------Signup API---------*/
 
 app.post('/signup/', async (req, res) => {
   const {username, email, password} = req.body
 
   const query = `
-    INSERT INTO user (username, email, password)
-    VALUES (?, ?, ?);
-  `
+  INSERT INTO user (username, email, password, role)
+  VALUES (?, ?, ?, 'USER');
+`
 
   await database.run(query, [username, email, password])
 
@@ -216,7 +229,61 @@ app.post('/login/', async (req, res) => {
   res.send({
     userId: user.user_id,
     role: user.role,
+    username: user.username,
   })
+})
+
+// users data
+app.get('/users/', async (req, res) => {
+  const users = await database.all(`
+    SELECT user_id, username, email, role, created_at
+    FROM user;
+  `)
+
+  res.send(users)
+})
+
+// GET watchlist
+app.get('/users/:userId/watchlist/', async (req, res) => {
+  const {userId} = req.params
+
+  const data = await database.all(`
+    SELECT m.movie_id, m.movie_name, m.movie_image
+    FROM watchlist w
+    JOIN movie m ON w.movie_id = m.movie_id
+    WHERE w.user_id = ?;
+  `, [userId])
+
+  res.send(data.map(m => ({
+    movieId: m.movie_id,
+    movieName: m.movie_name,
+    movieImage: m.movie_image,
+  })))
+})
+
+// ADD to watchlist
+app.post('/users/:userId/watchlist/', async (req, res) => {
+  const {userId} = req.params
+  const {movieId} = req.body
+
+  await database.run(`
+    INSERT INTO watchlist (user_id, movie_id)
+    VALUES (?, ?);
+  `, [userId, movieId])
+
+  res.send({message: 'Added to watchlist'})
+})
+
+// REMOVE from watchlist
+app.delete('/users/:userId/watchlist/:movieId/', async (req, res) => {
+  const {userId, movieId} = req.params
+
+  await database.run(`
+    DELETE FROM watchlist
+    WHERE user_id = ? AND movie_id = ?;
+  `, [userId, movieId])
+
+  res.send({message: 'Removed from watchlist'})
 })
 /* ---------- SEARCH API ---------- */
 
