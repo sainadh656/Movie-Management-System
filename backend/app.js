@@ -1,12 +1,15 @@
 
 
 const express = require('express')
+const cors = require("cors")
 const {open} = require('sqlite')
 const sqlite3 = require('sqlite3')
 const path = require('path')
 const fs = require("fs")
 
 const app = express()
+
+app.use(cors())
 app.use(express.json())
 
 const databasePath = path.join(__dirname, 'moviesData.db')
