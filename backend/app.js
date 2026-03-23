@@ -4,6 +4,7 @@ const express = require('express')
 const {open} = require('sqlite')
 const sqlite3 = require('sqlite3')
 const path = require('path')
+const fs = require("fs")
 
 const app = express()
 app.use(express.json())
@@ -11,15 +12,24 @@ app.use(express.json())
 const databasePath = path.join(__dirname, 'moviesData.db')
 let database = null
 
+
 const initializeDbAndServer = async () => {
   try {
+    const dbExists = fs.existsSync(databasePath)
+
     database = await open({
       filename: databasePath,
       driver: sqlite3.Database,
     })
 
-    app.listen(3000, () => {
-      console.log('Server Running at http://localhost:3000/')
+    if (!dbExists) {
+      const sql = fs.readFileSync('./movies.sql', 'utf-8')
+      await database.exec(sql)
+      console.log("Database created")
+    }
+
+    app.listen(process.env.PORT || 3000, () => {
+      console.log("Server Running")
     })
   } catch (e) {
     console.log(`DB Error: ${e.message}`)
